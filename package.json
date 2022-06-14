@@ -1,0 +1,14 @@
+{
+  "name": "newgen-assignment",
+  "version": "0.0.1",
+  "description": "testing functions",
+  "main": "filter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^17.0.42"
+  }
+}
