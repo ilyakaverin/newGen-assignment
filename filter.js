@@ -1,4 +1,4 @@
-var assert = require('node:assert/strict');
+var assert = require("node:assert/strict");
 var courses = [
     { name: "Courses in England", prices: [0, 100] },
     { name: "Courses in Germany", prices: [500, null] },
@@ -13,7 +13,7 @@ var requiredRange1 = [null, 200];
 var requiredRange2 = [100, 350];
 var requiredRange3 = [200, null];
 var requiredRange4 = [200, 300]; // добавил свой вариант
-var requiredRange5 = [null, 60]; // добавил свой вариант
+var requiredRange5 = [1000, null]; // добавил свой вариант
 var filterCourses = function (arrayOfCourses, requiredRange) {
     var minRequiredPrice = requiredRange[0], maxRequiredPrice = requiredRange[1];
     var filterCallback = function (course) {
@@ -29,8 +29,8 @@ var filterCourses = function (arrayOfCourses, requiredRange) {
             return (minRequiredPrice <= maxCoursePrice || minCoursePrice >= minRequiredPrice);
         }
         else {
-            return minCoursePrice > maxRequiredPrice ||
-                minRequiredPrice > maxCoursePrice
+            return (minRequiredPrice > maxCoursePrice && maxCoursePrice !== null) ||
+                (maxRequiredPrice < minCoursePrice && minCoursePrice !== null)
                 ? false
                 : true;
         }
@@ -51,13 +51,28 @@ var expected1 = [
     { name: "Courses in USA", prices: [200, null] },
     { name: "Courses in Kazakhstan", prices: [56, 324] },
 ], expected2 = [
-    { name: 'Courses in Germany', prices: [500, null] },
+    { name: 'Courses in England', prices: [0, 100] },
     { name: 'Courses in Italy', prices: [100, 200] },
     { name: 'Courses in Russia', prices: [null, 400] },
     { name: 'Courses in China', prices: [50, 250] },
     { name: 'Courses in USA', prices: [200, null] },
     { name: 'Courses in Kazakhstan', prices: [56, 324] }
-];
+], expected3 = [
+    { name: "Courses in Germany", prices: [500, null] },
+    { name: "Courses in Italy", prices: [100, 200] },
+    { name: "Courses in Russia", prices: [null, 400] },
+    { name: "Courses in China", prices: [50, 250] },
+    { name: "Courses in USA", prices: [200, null] },
+    { name: "Courses in Kazakhstan", prices: [56, 324] },
+], expected4 = [
+    { name: 'Courses in Italy', prices: [100, 200] },
+    { name: 'Courses in Russia', prices: [null, 400] },
+    { name: 'Courses in China', prices: [50, 250] },
+    { name: 'Courses in USA', prices: [200, null] },
+    { name: 'Courses in Kazakhstan', prices: [56, 324] }
+], expected5 = [];
 assert.deepStrictEqual(result1, expected1);
 assert.deepStrictEqual(result2, expected2);
-// console.log(result1, result2, result3, result4, result5);
+assert.deepStrictEqual(result3, expected3);
+assert.deepStrictEqual(result4, expected4);
+assert.deepStrictEqual(result5, expected5);
