@@ -24,38 +24,24 @@ interface Course {
   prices: PriceRange;
 }
 
-const filterCourses = (
-  arrayOfCourses: Course[],
-  requiredRange: PriceRange
-): Course[] => {
-  const [minRequiredPrice, maxRequiredPrice] = requiredRange;
+const isRangesIntersecting = (priceRange: PriceRange, requiredRange:PriceRange) => {
+    const lowLimit = Math.max(priceRange[0] ?? -Infinity, requiredRange[0] ?? -Infinity);
+    const hightLimit = Math.min(priceRange[1] ??  Infinity, requiredRange[1] ??  Infinity);
 
-  const filterCallback = (course: Course) => {
-    const maxCoursePrice: PriceType = course.prices[1];
-    const minCoursePrice: PriceType = course.prices[0];
+    return lowLimit <= hightLimit;
+  }
+  
+  const filterCourses =(arrayOfCourses, requiredRange) => arrayOfCourses.filter(course => {
+      const minCoursePrice = course.prices[0];
+      const maxCoursePrice = course.prices[1]
+      if(minCoursePrice === null && maxCoursePrice === null) {
+          return false
+      } else {
+       return isRangesIntersecting(course.prices, requiredRange)
+      }
+  });
+  
 
-    if (minCoursePrice === null && maxCoursePrice === null) {
-      return false;
-    }
-
-    if (minRequiredPrice === null) {
-      return maxRequiredPrice >= minCoursePrice;
-    } else if (maxRequiredPrice === null) {
-      return (
-        minRequiredPrice <= maxCoursePrice || minCoursePrice >= minRequiredPrice
-      );
-    } else {
-      return (minRequiredPrice > maxCoursePrice && maxCoursePrice !== null) ||
-        (maxRequiredPrice < minCoursePrice && minCoursePrice !== null)
-        ? false
-        : true;
-    }
-  };
-
-  const result: Course[] = arrayOfCourses.filter(filterCallback);
-
-  return result;
-};
 
 const result1 = filterCourses(courses, requiredRange1);
 const result2 = filterCourses(courses, requiredRange2);
@@ -94,7 +80,10 @@ const expected1 = [
     { name: 'Courses in USA', prices: [ 200, null ] },
     { name: 'Courses in Kazakhstan', prices: [ 56, 324 ] }
   ],
-  expected5 = [];
+  expected5 = [
+    { name: 'Courses in Germany', prices: [ 500, null ] },
+    { name: 'Courses in USA', prices: [ 200, null ] }
+  ];
 
 assert.deepStrictEqual(result1, expected1);
 assert.deepStrictEqual(result2, expected2);

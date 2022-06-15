@@ -14,30 +14,22 @@ var requiredRange2 = [100, 350];
 var requiredRange3 = [200, null];
 var requiredRange4 = [200, 300]; // добавил свой вариант
 var requiredRange5 = [1000, null]; // добавил свой вариант
-var filterCourses = function (arrayOfCourses, requiredRange) {
-    var minRequiredPrice = requiredRange[0], maxRequiredPrice = requiredRange[1];
-    var filterCallback = function (course) {
-        var maxCoursePrice = course.prices[1];
-        var minCoursePrice = course.prices[0];
-        if (minCoursePrice === null && maxCoursePrice === null) {
-            return false;
-        }
-        if (minRequiredPrice === null) {
-            return maxRequiredPrice >= minCoursePrice;
-        }
-        else if (maxRequiredPrice === null) {
-            return (minRequiredPrice <= maxCoursePrice || minCoursePrice >= minRequiredPrice);
-        }
-        else {
-            return (minRequiredPrice > maxCoursePrice && maxCoursePrice !== null) ||
-                (maxRequiredPrice < minCoursePrice && minCoursePrice !== null)
-                ? false
-                : true;
-        }
-    };
-    var result = arrayOfCourses.filter(filterCallback);
-    return result;
+var isRangesIntersecting = function (priceRange, requiredRange) {
+    var _a, _b, _c, _d;
+    var lowLimit = Math.max((_a = priceRange[0]) !== null && _a !== void 0 ? _a : -Infinity, (_b = requiredRange[0]) !== null && _b !== void 0 ? _b : -Infinity);
+    var hightLimit = Math.min((_c = priceRange[1]) !== null && _c !== void 0 ? _c : Infinity, (_d = requiredRange[1]) !== null && _d !== void 0 ? _d : Infinity);
+    return lowLimit <= hightLimit;
 };
+var filterCourses = function (arrayOfCourses, requiredRange) { return arrayOfCourses.filter(function (course) {
+    var minCoursePrice = course.prices[0];
+    var maxCoursePrice = course.prices[1];
+    if (minCoursePrice === null && maxCoursePrice === null) {
+        return false;
+    }
+    else {
+        return isRangesIntersecting(course.prices, requiredRange);
+    }
+}); };
 var result1 = filterCourses(courses, requiredRange1);
 var result2 = filterCourses(courses, requiredRange2);
 var result3 = filterCourses(courses, requiredRange3);
