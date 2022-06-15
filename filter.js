@@ -17,8 +17,8 @@ var requiredRange5 = [1000, null]; // добавил свой вариант
 var isRangesIntersecting = function (priceRange, requiredRange) {
     var _a, _b, _c, _d;
     var lowLimit = Math.max((_a = priceRange[0]) !== null && _a !== void 0 ? _a : -Infinity, (_b = requiredRange[0]) !== null && _b !== void 0 ? _b : -Infinity);
-    var hightLimit = Math.min((_c = priceRange[1]) !== null && _c !== void 0 ? _c : Infinity, (_d = requiredRange[1]) !== null && _d !== void 0 ? _d : Infinity);
-    return lowLimit <= hightLimit;
+    var highLimit = Math.min((_c = priceRange[1]) !== null && _c !== void 0 ? _c : Infinity, (_d = requiredRange[1]) !== null && _d !== void 0 ? _d : Infinity);
+    return lowLimit <= highLimit;
 };
 var filterCourses = function (arrayOfCourses, requiredRange) { return arrayOfCourses.filter(function (course) {
     var minCoursePrice = course.prices[0];
@@ -62,7 +62,10 @@ var expected1 = [
     { name: 'Courses in China', prices: [50, 250] },
     { name: 'Courses in USA', prices: [200, null] },
     { name: 'Courses in Kazakhstan', prices: [56, 324] }
-], expected5 = [];
+], expected5 = [
+    { name: 'Courses in Germany', prices: [500, null] },
+    { name: 'Courses in USA', prices: [200, null] }
+];
 assert.deepStrictEqual(result1, expected1);
 assert.deepStrictEqual(result2, expected2);
 assert.deepStrictEqual(result3, expected3);

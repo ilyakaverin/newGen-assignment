@@ -24,16 +24,16 @@ interface Course {
   prices: PriceRange;
 }
 
-const isRangesIntersecting = (priceRange: PriceRange, requiredRange:PriceRange) => {
+const isRangesIntersecting = (priceRange: PriceRange, requiredRange:PriceRange): boolean => {
     const lowLimit = Math.max(priceRange[0] ?? -Infinity, requiredRange[0] ?? -Infinity);
-    const hightLimit = Math.min(priceRange[1] ??  Infinity, requiredRange[1] ??  Infinity);
+    const highLimit = Math.min(priceRange[1] ??  Infinity, requiredRange[1] ??  Infinity);
 
-    return lowLimit <= hightLimit;
+    return lowLimit <= highLimit;
   }
   
-  const filterCourses =(arrayOfCourses, requiredRange) => arrayOfCourses.filter(course => {
-      const minCoursePrice = course.prices[0];
-      const maxCoursePrice = course.prices[1]
+  const filterCourses =(arrayOfCourses:Course[], requiredRange:PriceRange):Course[] => arrayOfCourses.filter(course => {
+      const minCoursePrice: PriceType = course.prices[0];
+      const maxCoursePrice: PriceType = course.prices[1]
       if(minCoursePrice === null && maxCoursePrice === null) {
           return false
       } else {
